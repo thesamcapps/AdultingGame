@@ -18,7 +18,7 @@ public class HockeyFight extends Card {
     public String text = "Do 4 Discouragement damage to your opponent. During your rival's next turn, they get 1 fewer Effort. (If this would mean your rival has fewer than 1 Effort, they still get 1 Effort.)";
     public int actionCount = 0;
 
-    public PlayArea effort(PlayArea playArea, List<String> input) {
+    public void effort(PlayArea playArea, List<String> input) {
         for (var i = 0; i < 4; i++) {
             playArea.opponentDeck.discouragement();
         }
@@ -26,8 +26,5 @@ public class HockeyFight extends Card {
         if (playArea.opponentEffort > 1) {
             playArea.opponentEffort--;
         }
-
-        return playArea;
     }
-
 }

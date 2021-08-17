@@ -11,16 +11,17 @@ import static java.lang.Integer.parseInt;
 
 public class Game {
 
-    private PlayArea playAreaA;
-    private PlayArea playAreaB;
-    private int whoseTurn;
-    private int id;
+    private final PlayArea playAreaA;
+    private final PlayArea playAreaB;
+    private final int id;
+
+    private char whoseTurn;
 
     public Game() {
         playAreaA = new PlayArea();
         playAreaB = new PlayArea();
         
-        whoseTurn = 1;
+        whoseTurn = 'a';
 
         Random random = new Random();
         this.id = random.nextInt(1_000_000_000);
@@ -28,12 +29,13 @@ public class Game {
 
     public void startGame() throws DeckWrongSizeException, NoHeroException {
         playAreaA.setUpPlayArea();
+        sync(playAreaA, playAreaB);
     }
 
     public void effortA(List<String> input) throws SkillTypeNotPresentException, InvalidActionCountException, NotEnoughSkillException {
         if (playAreaA.playerCardInProgress != null) {
             playAreaA.playerCardInProgress.effort(playAreaA, input);
-        } else if (input.get(0) == Efforts.HAND.toString()) {
+        } else if (input.get(0).equals(Efforts.HAND.toString())) {
             checkCostA(playAreaA.playerHand.cards.get(parseInt(input.get(1))));
             playAreaA.playerHand.cards.get(parseInt(input.get(1))).effort(playAreaA, input);
         }
@@ -42,8 +44,10 @@ public class Game {
             playAreaA.playerEffort--;
         } else {
             playAreaA.playerEffort = 2;
-            
+            whoseTurn = 'b';
         }
+
+        sync(playAreaA, playAreaB);
     }
 
     private void checkCostA(Card card) throws SkillTypeNotPresentException, NotEnoughSkillException {
@@ -57,7 +61,36 @@ public class Game {
         }
     }
 
-    private PlayArea sync(PlayArea updatedPlayArea, PlayArea playAreaToUpdate) {
+    public void effortB(List<String> input) throws SkillTypeNotPresentException, InvalidActionCountException, NotEnoughSkillException {
+        if (playAreaB.playerCardInProgress != null) {
+            playAreaB.playerCardInProgress.effort(playAreaB, input);
+        } else if (input.get(0).equals(Efforts.HAND.toString())) {
+            checkCostB(playAreaB.playerHand.cards.get(parseInt(input.get(1))));
+            playAreaB.playerHand.cards.get(parseInt(input.get(1))).effort(playAreaB, input);
+        }
+
+        if (playAreaB.playerEffort > 1) {
+            playAreaB.playerEffort--;
+        } else {
+            playAreaB.playerEffort = 2;
+            whoseTurn = 'a';
+        }
+
+        sync(playAreaB, playAreaA);
+    }
+
+    private void checkCostB(Card card) throws SkillTypeNotPresentException, NotEnoughSkillException {
+        switch (card.costType) {
+            case SPORTS:    if (playAreaB.playerSkillsInPlay.sportsSkillsInPlay <= 0) {
+                throw new SkillTypeNotPresentException(card);
+            } else if (playAreaB.playerSkillsInPlay.sportsSkillsInPlay < card.costAmount) {
+                throw new NotEnoughSkillException(playAreaB.playerSkillsInPlay.sportsSkillsInPlay, card);
+            }
+            default:        throw new SkillTypeNotPresentException(card);
+        }
+    }
+
+    private void sync(PlayArea updatedPlayArea, PlayArea playAreaToUpdate) {
         playAreaToUpdate.playerDeck = updatedPlayArea.opponentDeck;
         playAreaToUpdate.opponentDeck = updatedPlayArea.playerDeck;
 
@@ -76,6 +109,7 @@ public class Game {
         playAreaToUpdate.playerEffort = updatedPlayArea.opponentEffort;
         playAreaToUpdate.opponentEffort = updatedPlayArea.playerEffort;
 
-        //TODO DISCARD
+        playAreaToUpdate.playerDiscard = updatedPlayArea.opponentDiscard;
+        playAreaToUpdate.opponentDiscard = updatedPlayArea.playerDiscard;
     }
 }

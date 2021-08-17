@@ -15,5 +15,5 @@ public abstract class Card {
     public String text;
     public int actionCount;
 
-    public abstract PlayArea effort(PlayArea playArea, List<String> input) throws InvalidActionCountException;
+    public abstract void effort(PlayArea playArea, List<String> input) throws InvalidActionCountException;
 }

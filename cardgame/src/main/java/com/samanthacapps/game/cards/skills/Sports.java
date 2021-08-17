@@ -19,9 +19,7 @@ public class Sports extends Card {
     public String text = "";
     public int effortCount = 0;
 
-    public PlayArea effort(PlayArea playArea, List<String> input) throws InvalidActionCountException {
+    public void effort(PlayArea playArea, List<String> input) throws InvalidActionCountException {
         playArea.playerSkillsInPlay.sportsSkillsInPlay++;
-
-        return playArea;
     }
 }

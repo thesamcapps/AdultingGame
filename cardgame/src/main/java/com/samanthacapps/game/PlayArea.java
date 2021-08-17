@@ -36,8 +36,8 @@ public class PlayArea {
     public int playerEffort;
     public int opponentEffort;
 
-    //private DiscardPile playerDiscard;
-    //private DiscardPile opponentDiscard;
+    public List<Card> playerDiscard = new ArrayList<>();
+    public List<Card> opponentDiscard = new ArrayList<>();
 
     public PlayArea() {
         playerEffort = 2;
