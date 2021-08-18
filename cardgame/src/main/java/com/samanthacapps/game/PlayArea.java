@@ -72,11 +72,11 @@ public class PlayArea {
         AtomicInteger actionNum = new AtomicInteger(1);
         List<String> actions = new ArrayList<>();
 
-        actions.add(actionNum.getAndIncrement() + this.playerPrimaryHero.text);
+        actions.add(actionNum.getAndIncrement() + this.playerPrimaryHero.primaryText);
 
         if (!this.playerOtherHeroes.isEmpty()) {
             this.playerOtherHeroes.forEach(hero -> {
-                actions.add(actionNum.getAndIncrement() + hero.text);
+                actions.add(actionNum.getAndIncrement() + hero.primaryText);
             });
         }
 

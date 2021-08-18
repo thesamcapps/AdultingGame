@@ -12,8 +12,9 @@ public abstract class Card {
     public CardSubtype cardSubtype;
     public CostType costType;
     public int costAmount;
-    public String text;
-    public int actionCount;
+    public String primaryText;
+    public String followUpText;
+    public int effortCount;
 
     public abstract void effort(PlayArea playArea, List<String> input) throws InvalidActionCountException;
 }

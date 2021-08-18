@@ -17,14 +17,15 @@ public class Michaela extends Card {
     public CardSubtype cardSubtype = CardSubtype.YOUNG_PROFESSIONAL;
     public CostType costType = CostType.NONE;
     public int costAmount = 0;
-    public String text = "You may use an Effort to reveal the top 3 cards of your deck. Put all of those cards that need Brains Skill into your hands. Put the rest on the bottom of your deck (in any order).";
+    public String primaryText = "You may use an Effort to reveal the top 3 cards of your deck. Put all of those cards that need Brains Skill into your hands. Put the rest on the bottom of your deck (in any order).";
+    public String followUpText = "Type 'do' followed by the order in which you want to put these cards on the bottom of your deck, where the last card listed will be the last card in the deck. Example: do 3 1 2";
     public int effortCount = 0;
 
     public void effort(PlayArea playArea, List<String> input) throws InvalidActionCountException {
-        switch (actionCount) {
+        switch (effortCount) {
             case 0 -> firstEffort(playArea);
             case 1 -> finalEffort(playArea, input);
-            default -> throw new InvalidActionCountException(actionCount, name);
+            default -> throw new InvalidActionCountException(effortCount, name);
         };
     }
 
@@ -44,6 +45,8 @@ public class Michaela extends Card {
             playArea.playerCardsAwaitingAction = cardsToPutBack;
             effortCount++;
         }
+
+        playArea.playerCardInProgress = this;
     }
 
     private void finalEffort(PlayArea playArea, List<String> input) {
@@ -52,5 +55,7 @@ public class Michaela extends Card {
         }
 
         playArea.playerCardInProgress = null;
+        playArea.playerCardsAwaitingAction = new ArrayList<Card>();
+        effortCount = 0;
     }
 }

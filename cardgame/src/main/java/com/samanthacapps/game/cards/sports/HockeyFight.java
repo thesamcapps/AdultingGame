@@ -15,7 +15,7 @@ public class HockeyFight extends Card {
     public CardSubtype cardSubtype = CardSubtype.NONE;
     public CostType costType = CostType.SPORTS;
     public final int costAmount = 4;
-    public String text = "Do 4 Discouragement damage to your opponent. During your rival's next turn, they get 1 fewer Effort. (If this would mean your rival has fewer than 1 Effort, they still get 1 Effort.)";
+    public String primaryText = "Do 4 Discouragement damage to your opponent. During your rival's next turn, they get 1 fewer Effort. (If this would mean your rival has fewer than 1 Effort, they still get 1 Effort.)";
     public int actionCount = 0;
 
     public void effort(PlayArea playArea, List<String> input) {

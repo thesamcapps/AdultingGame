@@ -16,7 +16,7 @@ public class Sports extends Card {
     public CardSubtype cardSubtype = CardSubtype.NONE;
     public CostType costType = CostType.NONE;
     public int costAmount = 0;
-    public String text = "";
+    public String primaryText = "";
     public int effortCount = 0;
 
     public void effort(PlayArea playArea, List<String> input) throws InvalidActionCountException {
