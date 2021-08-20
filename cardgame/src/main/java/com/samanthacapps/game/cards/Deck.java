@@ -1,5 +1,7 @@
 package com.samanthacapps.game.cards;
 
+import com.samanthacapps.game.PlayArea;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -35,8 +37,12 @@ public class Deck {
         this.cards = shuffledDeck;
     }
 
-    public void discouragement() {
-        cards.remove(0);
+    public void discouragement(PlayArea playArea, int howMany) {
+        for (var i = 0; i < howMany; i++) {
+            playArea.opponentDiscard.add(cards.remove(0));
+        }
+
+        playArea.lastDamageDoneToOpponentByPlayerThisTurn = howMany;
     }
 
     public boolean checkSize() {

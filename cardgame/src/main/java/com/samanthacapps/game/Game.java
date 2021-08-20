@@ -4,6 +4,7 @@ import com.samanthacapps.exceptions.*;
 import com.samanthacapps.game.cards.Card;
 import com.samanthacapps.game.utils.Efforts;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,11 +16,11 @@ public class Game {
     private final PlayArea playAreaB;
     private final int id;
 
-    private char whoseTurn;
+    public char whoseTurn;
 
     public Game() {
-        playAreaA = new PlayArea();
-        playAreaB = new PlayArea();
+        playAreaA = new PlayArea('a');
+        playAreaB = new PlayArea('b');
         
         whoseTurn = 'a';
 
@@ -34,18 +35,22 @@ public class Game {
 
     public void effortA(List<String> input) throws SkillTypeNotPresentException, InvalidActionCountException, NotEnoughSkillException {
         if (playAreaA.playerCardInProgress != null) {
-            playAreaA.playerCardInProgress.effort(playAreaA, input);
+            playAreaA.playerCardInProgress.step(playAreaA, input);
         } else if (input.get(0).equals(Efforts.HAND.toString())) {
             checkCostA(playAreaA.playerHand.cards.get(parseInt(input.get(1))));
-            playAreaA.playerHand.cards.get(parseInt(input.get(1))).effort(playAreaA, input);
+            playAreaA.playerHand.cards.get(parseInt(input.get(1))).step(playAreaA, input);
         }
         
         if (playAreaA.playerEffort > 1) {
             playAreaA.playerEffort--;
+        } else if (playAreaA.needInputFromOpponent) {
+            whoseTurn = 'b';
         } else {
             playAreaA.playerEffort = 2;
             whoseTurn = 'b';
         }
+
+        playAreaA.competition.step(playAreaA, new ArrayList<>());
 
         sync(playAreaA, playAreaB);
     }
@@ -63,14 +68,16 @@ public class Game {
 
     public void effortB(List<String> input) throws SkillTypeNotPresentException, InvalidActionCountException, NotEnoughSkillException {
         if (playAreaB.playerCardInProgress != null) {
-            playAreaB.playerCardInProgress.effort(playAreaB, input);
+            playAreaB.playerCardInProgress.step(playAreaB, input);
         } else if (input.get(0).equals(Efforts.HAND.toString())) {
             checkCostB(playAreaB.playerHand.cards.get(parseInt(input.get(1))));
-            playAreaB.playerHand.cards.get(parseInt(input.get(1))).effort(playAreaB, input);
+            playAreaB.playerHand.cards.get(parseInt(input.get(1))).step(playAreaB, input);
         }
 
         if (playAreaB.playerEffort > 1) {
             playAreaB.playerEffort--;
+        } else if (playAreaA.needInputFromOpponent) {
+            whoseTurn = 'a';
         } else {
             playAreaB.playerEffort = 2;
             whoseTurn = 'a';

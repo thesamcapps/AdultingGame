@@ -16,12 +16,10 @@ public class HockeyFight extends Card {
     public CostType costType = CostType.SPORTS;
     public final int costAmount = 4;
     public String primaryText = "Do 4 Discouragement damage to your opponent. During your rival's next turn, they get 1 fewer Effort. (If this would mean your rival has fewer than 1 Effort, they still get 1 Effort.)";
-    public int actionCount = 0;
+    public int stepCount = 0;
 
-    public void effort(PlayArea playArea, List<String> input) {
-        for (var i = 0; i < 4; i++) {
-            playArea.opponentDeck.discouragement();
-        }
+    public void step(PlayArea playArea, List<String> input) {
+        playArea.opponentDeck.discouragement(playArea,4);
 
         if (playArea.opponentEffort > 1) {
             playArea.opponentEffort--;

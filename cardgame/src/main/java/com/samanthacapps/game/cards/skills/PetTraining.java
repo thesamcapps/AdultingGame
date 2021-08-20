@@ -4,22 +4,22 @@ import com.samanthacapps.exceptions.InvalidActionCountException;
 import com.samanthacapps.game.PlayArea;
 import com.samanthacapps.game.cards.Card;
 import com.samanthacapps.game.cards.CardClassification;
-import com.samanthacapps.game.cards.CostType;
 import com.samanthacapps.game.cards.CardSubtype;
+import com.samanthacapps.game.cards.CostType;
 
 import java.util.List;
 
-public class Sports extends Card {
+public class PetTraining extends Card {
 
-    public String name = "Sports Skill";
-    public CardClassification cardClassification = CardClassification.SKILL;
+    public String name = "Pet Training Skill";
+    public CardClassification cardClassification = CardClassification.TOOL;
     public CardSubtype cardSubtype = CardSubtype.NONE;
     public CostType costType = CostType.NONE;
     public int costAmount = 0;
     public String primaryText = "";
     public int stepCount = 0;
 
-    public void step(PlayArea playArea, List<String> input) throws InvalidActionCountException {
-        playArea.playerSkillsInPlay.sportsSkillsInPlay++;
+    public void step(PlayArea playArea, List<String> input) {
+        playArea.playerSkillsInPlay.petTrainingSkillsInPlay++;
     }
 }

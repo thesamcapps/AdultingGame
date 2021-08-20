@@ -14,7 +14,7 @@ public abstract class Card {
     public int costAmount;
     public String primaryText;
     public String followUpText;
-    public int effortCount;
+    public int stepCount;
 
-    public abstract void effort(PlayArea playArea, List<String> input) throws InvalidActionCountException;
+    public abstract void step(PlayArea playArea, List<String> input) throws InvalidActionCountException;
 }

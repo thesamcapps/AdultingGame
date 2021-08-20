@@ -12,6 +12,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class PlayArea {
 
+    public char whichPlayer;
+
     public Deck playerDeck;
     public Deck opponentDeck;
 
@@ -39,9 +41,22 @@ public class PlayArea {
     public List<Card> playerDiscard = new ArrayList<>();
     public List<Card> opponentDiscard = new ArrayList<>();
 
-    public PlayArea() {
+    public boolean needInputFromOpponent = false;
+
+    public List<Card> playerItems = new ArrayList<>();
+    public List<Card> opponentItems = new ArrayList<>();
+
+    public Card competition;
+
+    public int lastDamageDoneToPlayerByOpponentThisTurn;
+    public int lastDamageDoneToOpponentByPlayerThisTurn;
+
+    public PlayArea(char whichPlayer) {
+        this.whichPlayer = whichPlayer;
         playerEffort = 2;
         opponentEffort = 2;
+        lastDamageDoneToOpponentByPlayerThisTurn = 0;
+        lastDamageDoneToPlayerByOpponentThisTurn = 0;
     }
 
     public void setUpPlayArea() throws NoHeroException, DeckWrongSizeException {
