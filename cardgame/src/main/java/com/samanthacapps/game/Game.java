@@ -33,12 +33,13 @@ public class Game {
         sync(playAreaA, playAreaB);
     }
 
-    public void effortA(List<String> input) throws SkillTypeNotPresentException, InvalidActionCountException, NotEnoughSkillException {
+    public void effortA(List<String> input) throws SkillTypeNotPresentException, InvalidStepCountException, NotEnoughSkillException, NoCompetitionInPlayException {
         if (playAreaA.playerCardInProgress != null) {
             playAreaA.playerCardInProgress.step(playAreaA, input);
         } else if (input.get(0).equals(Efforts.HAND.toString())) {
             checkCostA(playAreaA.playerHand.cards.get(parseInt(input.get(1))));
             playAreaA.playerHand.cards.get(parseInt(input.get(1))).step(playAreaA, input);
+            playAreaA.playerHand.cards.remove(parseInt(input.get(1)))
         }
         
         if (playAreaA.playerEffort > 1) {
@@ -66,12 +67,13 @@ public class Game {
         }
     }
 
-    public void effortB(List<String> input) throws SkillTypeNotPresentException, InvalidActionCountException, NotEnoughSkillException {
+    public void effortB(List<String> input) throws SkillTypeNotPresentException, InvalidStepCountException, NotEnoughSkillException, NoCompetitionInPlayException {
         if (playAreaB.playerCardInProgress != null) {
             playAreaB.playerCardInProgress.step(playAreaB, input);
         } else if (input.get(0).equals(Efforts.HAND.toString())) {
             checkCostB(playAreaB.playerHand.cards.get(parseInt(input.get(1))));
             playAreaB.playerHand.cards.get(parseInt(input.get(1))).step(playAreaB, input);
+            playAreaB.playerHand.cards.remove(parseInt(input.get(1)))
         }
 
         if (playAreaB.playerEffort > 1) {

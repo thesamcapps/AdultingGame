@@ -1,6 +1,6 @@
 package com.samanthacapps.game.cards.skills;
 
-import com.samanthacapps.exceptions.InvalidActionCountException;
+import com.samanthacapps.exceptions.InvalidStepCountException;
 import com.samanthacapps.game.PlayArea;
 import com.samanthacapps.game.cards.Card;
 import com.samanthacapps.game.cards.CardClassification;
@@ -19,7 +19,7 @@ public class Sports extends Card {
     public String primaryText = "";
     public int stepCount = 0;
 
-    public void step(PlayArea playArea, List<String> input) throws InvalidActionCountException {
+    public void step(PlayArea playArea, List<String> input) throws InvalidStepCountException {
         playArea.playerSkillsInPlay.sportsSkillsInPlay++;
     }
 }

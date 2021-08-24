@@ -1,6 +1,5 @@
 package com.samanthacapps.game.cards.skills;
 
-import com.samanthacapps.exceptions.InvalidActionCountException;
 import com.samanthacapps.game.PlayArea;
 import com.samanthacapps.game.cards.Card;
 import com.samanthacapps.game.cards.CardClassification;

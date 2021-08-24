@@ -1,6 +1,7 @@
 package com.samanthacapps.game.cards.heroes;
 
-import com.samanthacapps.exceptions.InvalidActionCountException;
+import com.samanthacapps.exceptions.CardDoesNotExistException;
+import com.samanthacapps.exceptions.InvalidStepCountException;
 import com.samanthacapps.game.PlayArea;
 import com.samanthacapps.game.cards.Card;
 import com.samanthacapps.game.cards.CardClassification;
@@ -9,6 +10,9 @@ import com.samanthacapps.game.cards.CostType;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.samanthacapps.game.utils.CheckIfCardExists.checkIfCardExists;
+import static java.lang.Integer.parseInt;
 
 public class Michaela extends Card {
 
@@ -21,11 +25,11 @@ public class Michaela extends Card {
     public String followUpText = "Type 'do' followed by the order in which you want to put these cards on the bottom of your deck, where the last card listed will be the last card in the deck. Example: do 3 1 2";
     public int stepCount = 0;
 
-    public void step(PlayArea playArea, List<String> input) throws InvalidActionCountException {
+    public void step(PlayArea playArea, List<String> input) throws InvalidStepCountException, CardDoesNotExistException {
         switch (stepCount) {
             case 0 -> firstStep(playArea);
             case 1 -> finalStep(playArea, input);
-            default -> throw new InvalidActionCountException(stepCount, name);
+            default -> throw new InvalidStepCountException(stepCount, name);
         };
     }
 
@@ -49,9 +53,13 @@ public class Michaela extends Card {
         playArea.playerCardInProgress = this;
     }
 
-    private void finalStep(PlayArea playArea, List<String> input) {
+    private void finalStep(PlayArea playArea, List<String> input) throws CardDoesNotExistException {
         for (var i = 1; i < input.size(); i++) {
-            playArea.playerDeck.putCardOnBottom(playArea.playerCardsAwaitingAction.get(i));
+            checkIfCardExists(playArea.playerCardsAwaitingAction, parseInt(input.get(i)));
+        }
+
+        for (var i = 1; i < input.size(); i++) {
+            playArea.playerDeck.putCardOnBottom(playArea.playerCardsAwaitingAction.get(parseInt(input.get(i))));
         }
 
         playArea.playerCardInProgress = null;

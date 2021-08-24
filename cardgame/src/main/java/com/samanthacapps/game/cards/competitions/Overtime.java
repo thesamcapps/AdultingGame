@@ -1,6 +1,6 @@
 package com.samanthacapps.game.cards.competitions;
 
-import com.samanthacapps.exceptions.InvalidActionCountException;
+import com.samanthacapps.exceptions.InvalidStepCountException;
 import com.samanthacapps.game.PlayArea;
 import com.samanthacapps.game.cards.Card;
 import com.samanthacapps.game.cards.CardClassification;
@@ -22,11 +22,11 @@ public class Overtime extends Card {
     private int damageDoneToPlayerAByPlayerBCount = 0;
     private int damageDoneToPlayerBByPlayerACount = 0;
 
-    public void step(PlayArea playArea, List<String> input) throws InvalidActionCountException {
+    public void step(PlayArea playArea, List<String> input) throws InvalidStepCountException {
         switch (stepCount) {
             case 0 -> firstStep(playArea);
-            case 1 -> finalStep(playArea);
-            default -> throw new InvalidActionCountException(stepCount, name);
+            case 1 -> finalStep(playArea, input);
+            default -> throw new InvalidStepCountException(stepCount, name);
         };
     }
     
@@ -35,13 +35,13 @@ public class Overtime extends Card {
         stepCount++;
     }
     
-    private void finalStep(PlayArea playArea) {
+    private void finalStep(PlayArea playArea, List<String> input) {
         //TODO what if both hit 30 on same step or multiple damage in one step
         if ((playArea.whichPlayer == 'a' && damageDoneToPlayerAByPlayerBCount >= 30) || (playArea.whichPlayer == 'b' && damageDoneToPlayerBByPlayerACount >= 30)) {
             playArea.playerDeck.discouragement(playArea, 15);
             stepCount = 0;
             playArea.competition = null;
-        } else if ((playArea.whichPlayer == 'a' && damageDoneToPlayerBByPlayerACount >= 30) || (playArea.whichPlayer == 'b' && damageDoneToPlayerAByPlayerBCount >= 30)) {
+        } else if ((playArea.whichPlayer == 'a' && damageDoneToPlayerBByPlayerACount >= 30) || (playArea.whichPlayer == 'b' && damageDoneToPlayerAByPlayerBCount >= 30) || input.get(0) == "win") {
             playArea.opponentDeck.discouragement(playArea, 15);
             stepCount = 0;
             playArea.competition = null;

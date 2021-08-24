@@ -7,22 +7,22 @@ import com.samanthacapps.game.cards.Card;
 import com.samanthacapps.game.cards.CardClassification;
 import com.samanthacapps.game.cards.CardSubtype;
 import com.samanthacapps.game.cards.CostType;
+import com.samanthacapps.game.utils.CheckIfCardExists;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.samanthacapps.game.utils.CheckIfCardExists.checkIfCardExists;
 import static java.lang.Integer.parseInt;
 
-public class FoulBall extends Card {
+public class AnkleSprain extends Card {
 
-    public String name = "Foul Ball";
+    public String name = "Ankle Sprain";
     public CardClassification classification = CardClassification.ACTIVITY;
     public CardSubtype cardSubtype = CardSubtype.NONE;
     public CostType costType = CostType.SPORTS;
-    public final int costAmount = 6;
-    public String primaryText = "Do 4 Discouragement damage to your opponent. Then, if your opponent has any Tools in play he or she chooses 1 of them and discards it.";
-    public String followUpText = "Type 'do' followed by the number of the item you wish to discard. Example: do 2";
+    public final int costAmount = 7;
+    public String primaryText = "Do 3 damage to your opponent. Then, if your opponent has any cards in their hand, they choose 2 of them and discard them (1 if they only have 1).";
+    public String followUpText = "Type 'do' followed by which two cards you will discard. Example: do 3 2";
     public int stepCount = 0;
 
     public void step(PlayArea playArea, List<String> input) throws InvalidStepCountException, CardDoesNotExistException {
@@ -34,11 +34,11 @@ public class FoulBall extends Card {
     }
 
     private void firstStep(PlayArea playArea) {
-        playArea.opponentDeck.discouragement(playArea, 4);
+        playArea.opponentDeck.discouragement(playArea, 3);
 
-        if (playArea.playerItems.size() == 1) {
-            playArea.playerItems.remove(0);
-        } else if (playArea.playerItems.size() > 0) {
+        if (playArea.opponentHand.cards.size() == 1) {
+            playArea.opponentHand.cards.remove(0);
+        } else if (playArea.opponentHand.cards.size() >= 2) {
             playArea.needInputFromOpponent = true;
             playArea.opponentCardInProgress = this;
             stepCount++;
@@ -46,11 +46,20 @@ public class FoulBall extends Card {
     }
 
     private void finalStep(PlayArea playArea, List<String> input) throws CardDoesNotExistException {
-        checkIfCardExists(playArea.playerItems, parseInt(input.get(1)));
+        checkIfCardExists(playArea.playerHand.cards, parseInt(input.get(1)));
+        checkIfCardExists(playArea.playerHand.cards, parseInt(input.get(2)));
 
-        playArea.playerItems.remove(parseInt(input.get(1)));
+        if (parseInt(input.get(1)) > parseInt(input.get(2))) {
+            playArea.playerHand.cards.remove(parseInt(input.get(1)));
+            playArea.playerHand.cards.remove(parseInt(input.get(2)));
+        } else {
+            playArea.playerHand.cards.remove(parseInt(input.get(2)));
+            playArea.playerHand.cards.remove(parseInt(input.get(1)));
+        }
+
+        playArea.needInputFromOpponent = false;
+        playArea.playerEffort = 0;
         playArea.playerCardInProgress = null;
-        playArea.playerCardsAwaitingAction = new ArrayList<Card>();
         stepCount = 0;
     }
 }

@@ -1,6 +1,6 @@
 package com.samanthacapps.game.cards.petTraining;
 
-import com.samanthacapps.exceptions.InvalidActionCountException;
+import com.samanthacapps.exceptions.InvalidStepCountException;
 import com.samanthacapps.game.PlayArea;
 import com.samanthacapps.game.cards.Card;
 import com.samanthacapps.game.cards.CardClassification;
@@ -8,7 +8,6 @@ import com.samanthacapps.game.cards.CardSubtype;
 import com.samanthacapps.game.cards.CostType;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class DogTrainingForDummies extends Card {
 
@@ -20,11 +19,11 @@ public class DogTrainingForDummies extends Card {
     public String primaryText = "Provides one Pet Training Skill. You may use an Effort and discard this card from play to draw 3 cards.";
     public int stepCount = 0;
 
-    public void step(PlayArea playArea, List<String> input) throws InvalidActionCountException {
+    public void step(PlayArea playArea, List<String> input) throws InvalidStepCountException {
         switch (stepCount) {
             case 0 -> firstStep(playArea);
             case 1 -> finalStep(playArea);
-            default -> throw new InvalidActionCountException(stepCount, name);
+            default -> throw new InvalidStepCountException(stepCount, name);
         };
     }
 

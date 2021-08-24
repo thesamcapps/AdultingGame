@@ -1,6 +1,6 @@
 package com.samanthacapps.game.cards;
 
-import com.samanthacapps.exceptions.InvalidActionCountException;
+import com.samanthacapps.exceptions.*;
 import com.samanthacapps.game.PlayArea;
 
 import java.util.List;
@@ -16,5 +16,5 @@ public abstract class Card {
     public String followUpText;
     public int stepCount;
 
-    public abstract void step(PlayArea playArea, List<String> input) throws InvalidActionCountException;
+    public abstract void step(PlayArea playArea, List<String> input) throws InvalidStepCountException, NoCompetitionInPlayException, NotEnoughCardsInHandException, CardDoesNotExistException, NotEnoughCardsException, TooManyCardsSpecifiedException;
 }
